@@ -62,42 +62,47 @@ rappiplus_marketing_spend.csv
 
 Cada fila representa un pedido realizado en la plataforma.
 
-Columna	            Tipo_dato	    Descripción	                                    Ejemplo
-id_pedido	          Categórica	  ID único del pedido	                            order_0
-id_usuario	        Categórica	  Identificador del usuario que realizó el pedido	user_6993
-fecha_hora_pedido	  Fecha	        Fecha en la que se realizó el pedido	          2025-05-22
-pais	              Categórica	  País desde donde se realizó el pedido	          Argentina
-dispositivo	        Categórica	  Dispositivo utilizado para realizar el pedido	  desktop
-fuente_referencia	  Categórica	  Canal de adquisición del usuario	              organic
-nombre_producto	    Categórica	  Nombre del producto comprado	                  Jacket-Winter-M
-categoria_producto	Categórica	  Categoría del producto	                        Moda
-cantidad	          Numérico	    Cantidad de productos comprados	                2
-precio_unitario	    Numérico	    Precio por unidad del producto	                332.69
-monto_descuento	    Numérico	    Descuento aplicado al pedido	                  0
-monto_total	        Numérico	    Monto total pagado por el pedido	              665.37
+| Columna | Tipo de dato | Descripción | Ejemplo |
+|---|---|---|---|
+| `id_pedido` | Categórica | ID único del pedido | `order_0` |
+| `id_usuario` | Categórica | Identificador del usuario que realizó el pedido | `user_6993` |
+| `fecha_hora_pedido` | Fecha | Fecha en la que se realizó el pedido | `2025-05-22` |
+| `pais` | Categórica | País desde donde se realizó el pedido | Argentina |
+| `dispositivo` | Categórica | Dispositivo utilizado para realizar el pedido | Desktop |
+| `fuente_referencia` | Categórica | Canal de adquisición del usuario | Organic |
+| `nombre_producto` | Categórica | Nombre del producto comprado | `Jacket-Winter-M` |
+| `categoria_producto` | Categórica | Categoría del producto | Moda |
+| `cantidad` | Numérica | Cantidad de productos comprados | `2` |
+| `precio_unitario` | Numérica | Precio por unidad del producto | `332.69` |
+| `monto_descuento` | Numérica | Descuento aplicado al pedido | `0` |
+| `monto_total` | Numérica | Monto total pagado por el pedido | `665.37` |
 
 
 📄 rappiplus_catalog.csv
 
 Cada fila representa un producto disponible en la plataforma.
 
-Columna	            Tipo_dato	    Descripción	                                    Ejemplo
-nombre_producto	    Categórica	  Nombre del producto	                            Laptop-Gaming-16GB
-categoria_producto	Categórica	  Categoría a la que pertenece el producto	      Electrónica
-costo_unitario	    Numérico	    Costo por unidad del producto	                  280.68
-proveedor	          Categórica	  Empresa proveedora del producto	                Fuller, Pena and Myers
+
+| Columna | Tipo de dato | Descripción | Ejemplo |
+|---|---|---|---|
+| `nombre_producto` | Categórica | Nombre del producto | `Laptop-Gaming-16GB` |
+| `categoria_producto` | Categórica | Categoría a la que pertenece el producto | Electrónica |
+| `costo_unitario` | Numérica | Costo por unidad del producto | `280.68` |
+| `proveedor` | Categórica | Empresa proveedora del producto | Fuller, Pena and Myers |
 
 
 📄 rappiplus_marketing_spend.csv
 
 Cada fila representa una inversión en marketing realizada en un país y canal específico.
 
-Columna	            Tipo_dato	     Descripción	                                  Ejemplo
-fecha	              Fecha	         Fecha en la que se realizó la inversión	      2025-01-01
-pais	              Categórica	   País donde se ejecutó la campaña	              Mexico
-id_campaña	        Categórica	   Identificador único de la campaña	            organic_Mexico
-canal	              Categórica	   Canal de marketing utilizado	                  organic
-gasto	              Numérico	     Monto invertido en la campaña	                2446.25
+| Columna | Tipo de dato | Descripción | Ejemplo |
+|---|---|---|---|
+| `fecha` | Fecha | Fecha en la que se realizó la inversión | `2025-01-01` |
+| `pais` | Categórica | País donde se ejecutó la campaña | México |
+| `id_campaña` | Categórica | Identificador único de la campaña | `organic_Mexico` |
+| `canal` | Categórica | Canal de marketing utilizado | Organic |
+| `gasto` | Numérica | Monto invertido en la campaña | `2446.25` |
+
 
 💡 ¿Por qué vemos elementos en español e inglés en los datasets?
 
@@ -135,15 +140,16 @@ events, que se encuentra almacenada en una base de datos.
 
 La tabla contiene información del comportamiento de los usuarios dentro de la plataforma:
 
-Columna	            Tipo_dato	    Descripción	                                  Ejemplo
-id_usuario	        Categórica	  Identificador único del usuario	              user_6772
-id_sesion	          Categórica	  Identificador único de la sesión	            6a97f2af-32ae-4186-8c92-04025be1a27b
-nombre_evento	      Categórica	  Tipo de evento realizado por el usuario	      first_visit
-timestamp_evento	  Fecha	        Fecha en la que ocurrió el evento	            2025-05-17
-pais	              Categórica	  País desde donde se realizó el evento	        Colombia
-dispositivo	        Categórica	  Dispositivo utilizado por el usuario	        desktop
-fuente_referencia	  Categórica	  Canal de adquisición del usuario	            organic
-categoria_producto	Categórica	  Categoría del producto relacionada al evento	Moda
+| Columna | Tipo de dato | Descripción | Ejemplo |
+|---|---|---|---|
+| `id_usuario` | Categórica | Identificador único del usuario | `user_6772` |
+| `id_sesion` | Categórica | Identificador único de la sesión | `6a97f2af-32ae-4186-8c92-04025be1a27b` |
+| `nombre_evento` | Categórica | Tipo de evento realizado por el usuario | `first_visit` |
+| `timestamp_evento` | Fecha | Fecha en la que ocurrió el evento | `2025-05-17` |
+| `pais` | Categórica | País desde donde se realizó el evento | Colombia |
+| `dispositivo` | Categórica | Dispositivo utilizado por el usuario | Desktop |
+| `fuente_referencia` | Categórica | Canal de adquisición del usuario | Organic |
+| `categoria_producto` | Categórica | Categoría del producto relacionada con el evento | Moda |
 
 🔹 Paso 4: Análisis de retención por cohortes con SQL
 
@@ -166,22 +172,24 @@ Tabla users
 
 Cada fila representa un usuario registrado en la plataforma.
 
-Columna	        Tipo_dato	  Descripción	                            Ejemplo
-id_usuario	    Categórica	Identificador único del usuario	        user_0
-fecha_registro	Fecha	      Fecha en la que el usuario se registró	2025-01-29
-pais	          Categórica	País de origen del usuario	            Mexico
-dispositivo	    Categórica	Dispositivo utilizado al registrarse	  mobile
-tipo_plan	      Categórica	Tipo de plan del usuario	              free
+| Columna | Tipo de dato | Descripción | Ejemplo |
+|---|---|---|---|
+| `id_usuario` | Categórica | Identificador único del usuario | `user_0` |
+| `fecha_registro` | Fecha | Fecha en la que el usuario se registró | `2025-01-29` |
+| `pais` | Categórica | País de origen del usuario | México |
+| `dispositivo` | Categórica | Dispositivo utilizado al registrarse | Mobile |
+| `tipo_plan` | Categórica | Tipo de plan del usuario | `free` |
 
 Tabla user_activity
 
 Cada fila representa la actividad de un usuario después de su registro.
   
-Columna	              Tipo_dato	  Descripción	                                                        Ejemplo
-id_usuario	          Categórica	Identificador único del usuario	                                    user_0
-fecha_actividad	      Fecha	      Fecha en la que se registra la actividad del usuario	              2025-02-05
-dias_despues_registro	Numérico	  Número de días transcurridos desde el registro del usuario	        7
-activo	              Numérico	  Indicador de si el usuario estuvo activo (1 = activo, 0 = inactivo)	0
+| Columna | Tipo de dato | Descripción | Ejemplo |
+|---|---|---|---|
+| `id_usuario` | Categórica | Identificador único del usuario | `user_0` |
+| `fecha_actividad` | Fecha | Fecha en la que se registró la actividad del usuario | `2025-02-05` |
+| `dias_despues_registro` | Numérica | Número de días transcurridos desde el registro del usuario | `7` |
+| `activo` | Numérica binaria | Indica si el usuario estuvo activo: `1` = activo y `0` = inactivo | `0` |
 
 🔹 Paso 5: Evaluación de impacto (experimentación A/B) con Python
 
@@ -197,14 +205,16 @@ Para este análisis se utilizará la siguiente tabla:
 
 Cada fila representa la participación de un usuario en un experimento (A/B testing).
 
-Columna	        Tipo_dato	    Descripción	                                                          Ejemplo
-id_usuario	    Categórica	  Identificador único del usuario en el experimento	                    exp_user_0
-variante	      Categórica	  Variante del experimento asignada al usuario (control o tratamiento)	tratamiento
-convirtio	      Numérico	    Indicador de conversión (1 = convirtió, 0 = no convirtió)	            0
-dispositivo	    Categórica	  Dispositivo utilizado por el usuario	                                mobile
-pais	          Categórica	  País del usuario	                                                    Argentina
-duracion_sesion	Numérico	    Duración de la sesión del usuario en segundos	                        114.41
-timestamp	      Fecha	        Fecha en la que ocurrió la interacción	                              2025-03-28
+| Columna | Tipo de dato | Descripción | Ejemplo |
+|---|---|---|---|
+| `id_usuario` | Categórica | Identificador único del usuario en el experimento | `exp_user_0` |
+| `variante` | Categórica | Variante asignada al usuario: control o tratamiento | `tratamiento` |
+| `convirtio` | Numérica binaria | Indicador de conversión: `1` = convirtió y `0` = no convirtió | `0` |
+| `dispositivo` | Categórica | Dispositivo utilizado por el usuario | `mobile` |
+| `pais` | Categórica | País del usuario | Argentina |
+| `duracion_sesion` | Numérica | Duración de la sesión del usuario, expresada en segundos | `114.41` |
+| `timestamp` | Fecha | Fecha en la que ocurrió la interacción | `2025-03-28` |
+
 
 ⚠️ Asegúrate de usar esta ruta en el Notebook:
 '/datasets/experiment_checkout_ui.csv'
