@@ -1,236 +1,345 @@
-# RappiPlus-customer-analysis
-Proyecto RappiPlus: De datos a decisiones de negocio
+# RappiPlus Customer Analysis
 
-RappiPlus es un servicio de suscripción dentro del ecosistema de Rappi diseñado para aumentar la frecuencia de compra y el valor generado por usuario.
+## From Data to Business Decisions
 
-Sin embargo, el equipo de negocio no tiene claro si el servicio está cumpliendo su objetivo.
+RappiPlus is a subscription service within the Rappi ecosystem designed to increase purchase frequency and the value generated per user.
 
-El proyecto abarcara temas como:
+This project evaluates whether the service is achieving that objective by combining **Python, SQL, statistical analysis, cohort analysis, conversion funnel analysis, and Power BI** to transform raw customer data into actionable business insights.
 
-- Los usuarios realmente compran más
-- El modelo está generando ganancias
-- Se están perdiendo oportunidades en el proceso de compra
+The analysis focuses on three core business questions:
 
-El análisis permite entender el desempeño del servicio y detecta oportunidades concretas de mejora.
+- Are users purchasing more?
+- Is the business model generating profit?
+- Where are conversion and retention opportunities being lost?
 
-## Cómo fluye el análisis
+The project follows an end-to-end analytics workflow, from data preparation and validation to profitability analysis, user behavior, experimentation, and executive visualization.
 
-Cada etapa se construye sobre la anterior y responde una pregunta distinta del negocio.
+---
 
-🗺️ Diagrama general del proyecto
+## Business Objectives
 
-![Diagrama Flujo de Rappiplus](images/diagrama_rappiplus_1.png)
+The analysis was designed to help stakeholders understand:
 
-🔄 Que se espera en cada paso
+- Overall business profitability
+- Revenue, costs, and profit by segment
+- Customer behavior throughout the conversion funnel
+- Major user drop-off points
+- Customer retention over time
+- The impact of changes introduced through A/B testing
+- Key insights that can support business decisions
 
-Pasos	Pregunta_clave	                Resultado_esperado
-1	    ¿Podemos confiar en los datos?	Dataset limpio
-2	    ¿El negocio es rentable?	      KPIS(Revenue, cost, profit)
-3	    ¿Dónde se pierden usuarios?	    Funnel
-4	    ¿Los usuarios regresan?	        Cohortes
-5	    ¿Los cambios funcionan?	        Test estadístico
-6	    ¿Cómo comunicamos?	            Dashboard
+---
 
-💡 Nota: El notebook en la plataforma servirá de guía.
+## Analytics Workflow
 
-🚀 Inicio del análisis
+Each stage builds on the previous one and answers a different business question.
 
-🔹 Paso 1: Preparación y calidad de datos con Python
-
-🎯 Pasos:
-1 Evaluar la calidad de los datos.
-2 Detectar inconsistencias.
-3 Limpiar y estructurar datasets.
-4 Generar un dataset listo para análisis.
-
-📦 Entregable
-3 datasets limpios.
-
-📂 Dataset del proyecto
-El análisis comienza con tres fuentes principales:
-
-rappiplus_orders_raw.csv
-rappiplus_catalog.csv
-rappiplus_marketing_spend.csv
-
-/datasets/rappiplus_orders_raw.csv
-/datasets/rappiplus_catalog.csv
-/datasets/rappiplus_marketing_spend.csv
-
-
-📄 /rappiplus_orders_raw.csv
-
-Cada fila representa un pedido realizado en la plataforma.
-
-| Columna | Tipo de dato | Descripción | Ejemplo |
+| Step | Business Question | Method | Main Output |
 |---|---|---|---|
-| `id_pedido` | Categórica | ID único del pedido | `order_0` |
-| `id_usuario` | Categórica | Identificador del usuario que realizó el pedido | `user_6993` |
-| `fecha_hora_pedido` | Fecha | Fecha en la que se realizó el pedido | `2025-05-22` |
-| `pais` | Categórica | País desde donde se realizó el pedido | Argentina |
-| `dispositivo` | Categórica | Dispositivo utilizado para realizar el pedido | Desktop |
-| `fuente_referencia` | Categórica | Canal de adquisición del usuario | Organic |
-| `nombre_producto` | Categórica | Nombre del producto comprado | `Jacket-Winter-M` |
-| `categoria_producto` | Categórica | Categoría del producto | Moda |
-| `cantidad` | Numérica | Cantidad de productos comprados | `2` |
-| `precio_unitario` | Numérica | Precio por unidad del producto | `332.69` |
-| `monto_descuento` | Numérica | Descuento aplicado al pedido | `0` |
-| `monto_total` | Numérica | Monto total pagado por el pedido | `665.37` |
+| 1 | Can we trust the data? | Python data cleaning and validation | Clean datasets |
+| 2 | Is the business profitable? | Profitability and KPI analysis | Revenue, cost, and profit metrics |
+| 3 | Where are users dropping off? | SQL conversion funnel | Funnel and drop-off analysis |
+| 4 | Are users coming back? | SQL cohort analysis | Retention insights |
+| 5 | Do product changes improve results? | Python A/B testing | Statistical evaluation |
+| 6 | How do we communicate the findings? | Power BI | Executive dashboard |
 
+---
 
-📄 rappiplus_catalog.csv
+# 1. Data Preparation & Quality Analysis
 
-Cada fila representa un producto disponible en la plataforma.
+The first stage evaluates the reliability of the available data before performing business analysis.
 
+### Objectives
 
-| Columna | Tipo de dato | Descripción | Ejemplo |
+- Evaluate data quality
+- Detect inconsistencies
+- Identify missing or duplicated information
+- Clean and structure the datasets
+- Generate analysis-ready datasets
+
+### Main Data Sources
+
+The project begins with three primary datasets:
+
+```text
+datasets/
+├── rappiplus_orders_raw.csv
+├── rappiplus_catalog.csv
+└── rappiplus_marketing_spend.csv
+```
+
+### `rappiplus_orders_raw.csv`
+
+Each row represents an order placed on the platform.
+
+| Column | Data Type | Description | Example |
 |---|---|---|---|
-| `nombre_producto` | Categórica | Nombre del producto | `Laptop-Gaming-16GB` |
-| `categoria_producto` | Categórica | Categoría a la que pertenece el producto | Electrónica |
-| `costo_unitario` | Numérica | Costo por unidad del producto | `280.68` |
-| `proveedor` | Categórica | Empresa proveedora del producto | Fuller, Pena and Myers |
+| `id_pedido` | Categorical | Unique order identifier | `order_0` |
+| `id_usuario` | Categorical | Identifier of the user who placed the order | `user_6993` |
+| `fecha_hora_pedido` | Date | Date when the order was placed | `2025-05-22` |
+| `pais` | Categorical | Country where the order was placed | Argentina |
+| `dispositivo` | Categorical | Device used to place the order | Desktop |
+| `fuente_referencia` | Categorical | User acquisition channel | Organic |
+| `nombre_producto` | Categorical | Name of the purchased product | `Jacket-Winter-M` |
+| `categoria_producto` | Categorical | Product category | Fashion |
+| `cantidad` | Numeric | Number of products purchased | `2` |
+| `precio_unitario` | Numeric | Price per unit | `332.69` |
+| `monto_descuento` | Numeric | Discount applied to the order | `0` |
+| `monto_total` | Numeric | Total amount paid | `665.37` |
 
+### `rappiplus_catalog.csv`
 
-📄 rappiplus_marketing_spend.csv
+Each row represents a product available on the platform.
 
-Cada fila representa una inversión en marketing realizada en un país y canal específico.
-
-| Columna | Tipo de dato | Descripción | Ejemplo |
+| Column | Data Type | Description | Example |
 |---|---|---|---|
-| `fecha` | Fecha | Fecha en la que se realizó la inversión | `2025-01-01` |
-| `pais` | Categórica | País donde se ejecutó la campaña | México |
-| `id_campaña` | Categórica | Identificador único de la campaña | `organic_Mexico` |
-| `canal` | Categórica | Canal de marketing utilizado | Organic |
-| `gasto` | Numérica | Monto invertido en la campaña | `2446.25` |
+| `nombre_producto` | Categorical | Product name | `Laptop-Gaming-16GB` |
+| `categoria_producto` | Categorical | Product category | Electronics |
+| `costo_unitario` | Numeric | Unit cost of the product | `280.68` |
+| `proveedor` | Categorical | Product supplier | Fuller, Pena and Myers |
 
+### `rappiplus_marketing_spend.csv`
 
-💡 ¿Por qué vemos elementos en español e inglés en los datasets?
+Each row represents marketing investment for a specific country and channel.
 
-Hay herramientas como Google Analytics que, aunque estén en español, suelen exportar datos con categorías o términos en inglés.
-
-Esto sucede porque hay plataformas utilizan estructuras internas estandarizadas y no traducen los datos crudos, únicamente la interfaz.
-
-🔹 Paso 2: Análisis de rentabilidad del negocio con Python
-
-🎯 Pasos:
-
-1 Cálculo de KPIs (ejemplo ingresos/revenue, costos, ganancias).
-2 Identificación de segmentos rentables.
-
-🗂️ Fuentes de datos
-
-Para este análisis se utilizarán los datasets del paso 1.
-
-🔹 Paso 3: Análisis del funnel de conversión con SQL
-
-🎯 Pasos:
-
-1 Analizar el recorrido del usuario.
-2 Funnel completo.
-3 Detectar puntos de abandono.
-4 Identificación del mayor drop-off.
-
-🗂️ Fuente de datos
-
-Para este análisis se utilizará la siguiente tabla:
-
-events, que se encuentra almacenada en una base de datos.
-
-⚙️ Importante: La conexión a esta base de datos se realizará desde el Jupyter Notebook.
-
-La tabla contiene información del comportamiento de los usuarios dentro de la plataforma:
-
-| Columna | Tipo de dato | Descripción | Ejemplo |
+| Column | Data Type | Description | Example |
 |---|---|---|---|
-| `id_usuario` | Categórica | Identificador único del usuario | `user_6772` |
-| `id_sesion` | Categórica | Identificador único de la sesión | `6a97f2af-32ae-4186-8c92-04025be1a27b` |
-| `nombre_evento` | Categórica | Tipo de evento realizado por el usuario | `first_visit` |
-| `timestamp_evento` | Fecha | Fecha en la que ocurrió el evento | `2025-05-17` |
-| `pais` | Categórica | País desde donde se realizó el evento | Colombia |
-| `dispositivo` | Categórica | Dispositivo utilizado por el usuario | Desktop |
-| `fuente_referencia` | Categórica | Canal de adquisición del usuario | Organic |
-| `categoria_producto` | Categórica | Categoría del producto relacionada con el evento | Moda |
+| `fecha` | Date | Date of the marketing investment | `2025-01-01` |
+| `pais` | Categorical | Country where the campaign was executed | Mexico |
+| `id_campaña` | Categorical | Unique campaign identifier | `organic_Mexico` |
+| `canal` | Categorical | Marketing channel | Organic |
+| `gasto` | Numeric | Campaign investment | `2446.25` |
 
-🔹 Paso 4: Análisis de retención por cohortes con SQL
+> **Dataset note:** Column names remain in their original form to preserve compatibility with the notebooks, queries, and source files. Business documentation is presented in English.
 
-🎯 Pasos:
+---
 
-1 Analizar comportamiento en el tiempo.
-2 Construir cohortes.
-3 Insight de retención.
+# 2. Business Profitability Analysis with Python
 
-🗂️ Fuente de datos
+This stage evaluates the financial performance of the business.
 
-Para este análisis se utilizarán las siguientes tablas:
+### Analysis
 
-Tabla users → Información de registro de usuarios.
-Tabla user_activity → Actividad de los usuarios después del registro.
+- Revenue calculation
+- Cost calculation
+- Profit calculation
+- KPI development
+- Identification of profitable and underperforming segments
+- Comparison across relevant business dimensions
 
+### Core KPIs
 
-Estructura de las tablas:
-Tabla users
+- **Revenue**
+- **Cost**
+- **Profit**
+- **Average Order Value**
+- **Profit Margin**
 
-Cada fila representa un usuario registrado en la plataforma.
+The cleaned datasets generated during the data-preparation stage are used as the primary sources for this analysis.
 
-| Columna | Tipo de dato | Descripción | Ejemplo |
+---
+
+# 3. Conversion Funnel Analysis with SQL
+
+This stage analyzes the customer journey through the platform and identifies where users abandon the purchasing process.
+
+### Objectives
+
+- Analyze the complete user journey
+- Build the conversion funnel
+- Calculate conversion between funnel stages
+- Detect abandonment points
+- Identify the largest drop-off
+
+### Data Source
+
+The analysis uses the `events` table stored in a database and accessed from the Jupyter Notebook.
+
+| Column | Data Type | Description | Example |
 |---|---|---|---|
-| `id_usuario` | Categórica | Identificador único del usuario | `user_0` |
-| `fecha_registro` | Fecha | Fecha en la que el usuario se registró | `2025-01-29` |
-| `pais` | Categórica | País de origen del usuario | México |
-| `dispositivo` | Categórica | Dispositivo utilizado al registrarse | Mobile |
-| `tipo_plan` | Categórica | Tipo de plan del usuario | `free` |
+| `id_usuario` | Categorical | Unique user identifier | `user_6772` |
+| `id_sesion` | Categorical | Unique session identifier | `6a97f2af-32ae-4186-8c92-04025be1a27b` |
+| `nombre_evento` | Categorical | User event type | `first_visit` |
+| `timestamp_evento` | Date | Date when the event occurred | `2025-05-17` |
+| `pais` | Categorical | User country | Colombia |
+| `dispositivo` | Categorical | Device used | Desktop |
+| `fuente_referencia` | Categorical | Acquisition channel | Organic |
+| `categoria_producto` | Categorical | Product category associated with the event | Fashion |
 
-Tabla user_activity
+SQL is used to transform event-level information into business metrics that reveal customer progression and abandonment throughout the purchasing journey.
 
-Cada fila representa la actividad de un usuario después de su registro.
-  
-| Columna | Tipo de dato | Descripción | Ejemplo |
+---
+
+# 4. Cohort Retention Analysis with SQL
+
+This stage measures whether customers continue interacting with the platform after registration.
+
+### Objectives
+
+- Analyze user behavior over time
+- Build registration cohorts
+- Measure retention by cohort
+- Identify changes in customer engagement
+- Generate actionable retention insights
+
+### `users`
+
+Each row represents a registered user.
+
+| Column | Data Type | Description | Example |
 |---|---|---|---|
-| `id_usuario` | Categórica | Identificador único del usuario | `user_0` |
-| `fecha_actividad` | Fecha | Fecha en la que se registró la actividad del usuario | `2025-02-05` |
-| `dias_despues_registro` | Numérica | Número de días transcurridos desde el registro del usuario | `7` |
-| `activo` | Numérica binaria | Indica si el usuario estuvo activo: `1` = activo y `0` = inactivo | `0` |
+| `id_usuario` | Categorical | Unique user identifier | `user_0` |
+| `fecha_registro` | Date | User registration date | `2025-01-29` |
+| `pais` | Categorical | User country | Mexico |
+| `dispositivo` | Categorical | Device used during registration | Mobile |
+| `tipo_plan` | Categorical | User plan type | `free` |
 
-🔹 Paso 5: Evaluación de impacto (experimentación A/B) con Python
+### `user_activity`
 
-🎯 Pasos:
+Each row represents user activity after registration.
 
-1 Resultado del experimento.
-2 Recomendación.
-
-🗂️ Fuente de datos
-Para este análisis se utilizará la siguiente tabla:
-
-📄 /datasets/experiment_checkout_ui.csv
-
-Cada fila representa la participación de un usuario en un experimento (A/B testing).
-
-| Columna | Tipo de dato | Descripción | Ejemplo |
+| Column | Data Type | Description | Example |
 |---|---|---|---|
-| `id_usuario` | Categórica | Identificador único del usuario en el experimento | `exp_user_0` |
-| `variante` | Categórica | Variante asignada al usuario: control o tratamiento | `tratamiento` |
-| `convirtio` | Numérica binaria | Indicador de conversión: `1` = convirtió y `0` = no convirtió | `0` |
-| `dispositivo` | Categórica | Dispositivo utilizado por el usuario | `mobile` |
-| `pais` | Categórica | País del usuario | Argentina |
-| `duracion_sesion` | Numérica | Duración de la sesión del usuario, expresada en segundos | `114.41` |
-| `timestamp` | Fecha | Fecha en la que ocurrió la interacción | `2025-03-28` |
+| `id_usuario` | Categorical | Unique user identifier | `user_0` |
+| `fecha_actividad` | Date | Date of user activity | `2025-02-05` |
+| `dias_despues_registro` | Numeric | Days elapsed since registration | `7` |
+| `activo` | Binary Numeric | Activity indicator: `1` = active, `0` = inactive | `0` |
 
+The resulting cohort analysis provides a structured view of how engagement evolves after acquisition.
 
-⚠️ Asegúrate de usar esta ruta en el Notebook:
-'/datasets/experiment_checkout_ui.csv'
+---
 
-🔹 Paso 6: Construcción del dashboard y comunicación de insights
+# 5. A/B Testing & Impact Evaluation with Python
 
-🎯 Pasos:
+This stage evaluates whether a product or interface change produces a statistically meaningful improvement in user behavior.
 
-1 Traducir análisis en visualización.
-2 Comunicar insights.
-3 Utilizar los archivos limpios generados en el Paso 1 como fuente de datos.
+### Objectives
 
-📦 Entregable
+- Compare control and treatment groups
+- Measure conversion performance
+- Evaluate experimental results
+- Apply statistical testing
+- Translate the results into a business recommendation
 
-Dashboard final.
+### Data Source
 
+`datasets/experiment_checkout_ui.csv`
 
+Each row represents a user's participation in the A/B experiment.
 
-Si compartes el link del dashboard publicado (por ejemplo, desde Power BI o Tableau), no es necesario incluirlos.
+| Column | Data Type | Description | Example |
+|---|---|---|---|
+| `id_usuario` | Categorical | Unique experiment user identifier | `exp_user_0` |
+| `variante` | Categorical | Assigned experimental variant | `tratamiento` |
+| `convirtio` | Binary Numeric | Conversion indicator: `1` = converted, `0` = did not convert | `0` |
+| `dispositivo` | Categorical | User device | `mobile` |
+| `pais` | Categorical | User country | Argentina |
+| `duracion_sesion` | Numeric | Session duration in seconds | `114.41` |
+| `timestamp` | Date | Interaction date | `2025-03-28` |
+
+The statistical analysis is used to determine whether observed differences between the groups are likely to represent a real effect rather than random variation.
+
+---
+
+# 6. Power BI Dashboard & Insight Communication
+
+The final stage converts the analytical results into an executive-level visualization.
+
+The dashboard is designed to make the project's main findings accessible to business stakeholders and support data-driven decision-making.
+
+### Dashboard Focus
+
+- Business performance
+- Revenue and profitability
+- Customer behavior
+- Conversion performance
+- Marketing performance
+- Retention trends
+- Key business insights
+
+### Power BI File
+
+```text
+DashBoard_RappiPlus.pbix
+```
+
+---
+
+# Repository Structure
+
+```text
+RappiPlus-customer-analysis/
+│
+├── datasets/
+│   ├── rappiplus_orders_raw.csv
+│   ├── rappiplus_catalog.csv
+│   ├── rappiplus_marketing_spend.csv
+│   └── experiment_checkout_ui.csv
+│
+├── images/
+│
+├── DashBoard_RappiPlus.pbix
+├── Proyecto_RappiPlus.ipynb
+└── README.md
+```
+
+---
+
+# Technologies & Skills
+
+### Data Analysis
+- Python
+- Pandas
+- NumPy
+- Exploratory Data Analysis
+- Data Cleaning
+- Data Validation
+
+### SQL
+- Data Extraction
+- Aggregations
+- Conversion Funnel Analysis
+- Cohort Analysis
+- Retention Analysis
+
+### Statistics
+- A/B Testing
+- Hypothesis Testing
+- Conversion Analysis
+- Statistical Interpretation
+
+### Business Intelligence
+- Power BI
+- KPI Development
+- Dashboard Design
+- Data Visualization
+- Business Insight Communication
+
+### Business Analytics
+- Revenue Analysis
+- Cost Analysis
+- Profitability Analysis
+- Customer Behavior
+- Funnel Analysis
+- Retention Analysis
+- Marketing Performance
+
+---
+
+# Professional Skills Demonstrated
+
+This project demonstrates an end-to-end analytical workflow:
+
+**Raw Data → Data Quality → Business KPIs → Customer Funnel → Retention → Experimentation → Dashboard → Business Insights**
+
+It combines technical analysis with business interpretation, demonstrating the ability to transform multiple data sources into insights that support decision-making.
+
+---
+
+# Author
+
+**Julio Cesar Valdez Espinosa**
+
+Senior Data Analyst | Senior Oracle PL/SQL Developer | Technical Lead
+
+Monterrey, Nuevo León, Mexico
